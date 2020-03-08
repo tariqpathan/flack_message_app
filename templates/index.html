@@ -1,0 +1,70 @@
+
+{% extends "layout.html" %}
+
+{% block main %}
+    <div id="pageContainer">
+        <h3 id="hello"></h3>
+        <div id="displayNameFormDiv">
+            <form id="displayNameForm" class="form-inline" method="post" action="{{ url_for('new_display_name') }}">
+                <div class="form-input">
+                    <input class="form-control" id="username" autocomplete="off" autofocus placeholder="Tell us your name :)" type="text">
+                </div>
+                <button class="btn btn-primary" type="submit">Go</button>
+            </form>
+        </div>
+
+        <div id="mainContainer">
+            <div id="channelContainer">
+                <h4 id="result"></h4>
+                <div id="channelListContainer" class="listContainer"><ul id="channelList"></ul></div>
+                <div id="mobileNavbar">
+                    <div id="selectContainer" class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <p class="input-group-text"></p>
+                            <select id="channelDatalist" class="form-control"></select>
+                        </div>
+                    </div>
+                    <div id="newchannelDiv">
+                        <form id="channelForm" class="form-inline" method="post" action="{{ url_for('new_channel') }}">
+                            <div class="input-group mb-3">
+                                <input class="form-control" id="newChannel" autocomplete="off" autofocus placeholder="Add channel" type="text" maxlength="10">
+                                <div class="input-group-append">
+                                    <div class="input-group-text" id="counter"></div>
+                                    <button class="btn btn-primary" type="submit">Create</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div id="messageContainer">
+                <div class="listContainer"><ul id="messageDisplayList"></ul></div>
+                <div id="messageInputContainer">
+                    <form class="form-group">
+                        <div class="input-group mb-3">
+                            <input class="form-control msg" id="newMessage" autocomplete="off" autofocus placeholder="Type your message" type="text">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" id="messageButton">Message</button>
+                            </div>    
+                        </div>    
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Template elements to be used for displaying messages -->
+    <template id="message_template">
+        <div> <!--incoming/outgoing-->
+            <p></p> <!--sent/received-->
+            <div class="details">
+                <p class="time_date"></p>
+                <p class="name"></p>
+                <p class="delete"></p>
+            </div>
+        </div>
+    </template>
+
+
+{% endblock %}

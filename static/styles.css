@@ -1,0 +1,195 @@
+.incoming_msg {
+    margin:1px 0 1px;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    align-items: flex-start;
+}
+
+.outgoing_msg {
+    margin:1px 0 1px;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    align-items: flex-end;
+}
+
+.sent {
+    background: #05728f;
+    color: #fff;
+    width: auto;
+    margin: 0;
+    padding: 0 4 0 10;
+    text-align: right;
+}
+
+.received {
+    background: #ebebeb;
+    color: #646464;
+    width: auto;
+    margin: 0;
+    padding: 0 10 0 4;
+    text-align: left;
+}
+
+.details {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    align-items: baseline;
+
+}
+
+.name > p {
+    font-size: 11px;
+    margin: 0;
+    padding: 0 5 0 0;
+}
+
+.time_date {
+    color: #747474;
+    font-size: 10px;
+    margin: 0;
+    padding: 0 0 0 5;
+}
+
+.delete {
+    font-size: 11px;
+    margin: 0 2;
+}
+
+#messageContainer {
+    height: 90vh;
+    width: 83vw;
+    display: flex;
+    flex-direction: column;
+    padding: 0 10px;
+    border-color: #747474;
+    border-width: 1px;
+    background-color:  #cccccc;
+    border-radius: 1vh;
+}
+
+.listContainer {
+    overflow: auto;
+    padding: 10px;
+    flex-grow: 1;
+}
+
+ #messageDisplayList > a:active {
+     font-weight: bold;
+}
+
+#messageInputContainer {
+    width: auto;
+    padding: 10px;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    overflow: auto;
+}
+
+#channelContainer {
+    width: auto;
+    display: flex;
+    flex-direction: column;
+    padding: 0 10px;
+
+}
+
+#newChannelDiv {
+    width: 100%;
+    padding: 10px;
+}
+
+#counter {
+    padding: 0.375rem 0.5rem;
+    width: 2.4rem;
+    justify-content: space-evenly;
+}
+
+#mainContainer {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-around;
+    align-content: center;
+    margin: 10px;
+}
+#channelForm > div {
+    margin-bottom: 0 !important;
+    align-items: center;
+}
+#displayNameForm {
+    justify-content: center;
+}
+
+h3 h4 {
+    margin: 0;
+}
+
+#result {
+    margin: 0;
+}
+
+#hello {
+    text-align: center;
+}
+
+#pageContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+@media screen and (max-width: 600px) {
+    body {
+        min-width: 450px;
+    }
+    #hello {
+        display: none;
+    }
+    #channelListContainer {
+        display: none;
+    }
+    #channelContainer {
+        width: auto;
+        padding: 0.4rem;
+    }
+    #mobileNavbar {
+        display: flex;
+        flex-direction: row;
+    }
+    #newChannelDiv {
+        padding: 0;
+    }
+    #channelForm {
+        margin: 0;
+    }
+    #selectContainer {
+        margin-bottom: 0 !important;
+    }
+    #selectContainer > div {
+        width: 100%;
+    }
+    #selectContainer > div > p {
+        margin: 0;
+        padding: 0.375rem 0;
+    }
+    #channelDatalist {
+        padding: 0.375rem 0;
+    }
+    #mainContainer {
+        flex-direction: column;
+    }
+    #messageContainer {
+        width: 100%;
+        height: 85vh;
+    }
+}
+
+@media screen and (min-width: 601px) {
+    #selectContainer, #selectContainer > * {
+        display: none;
+    }
+}
