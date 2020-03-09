@@ -16,16 +16,16 @@ class my_list(list):
         list.append(self, item)
         if len(self) > 100: self[:1]=[]
 
-list1 = my_list([{'displayName': 'tariq', 'message': 'urface', 'timestamp': 1575112612345, 'deleted': False}])
+list1 = my_list([{'displayName': 'tariq', 'message': 'hiiiii', 'timestamp': 1575112612345, 'deleted': False}])
 list2 = my_list([{'displayName': 'joseph', 'message': 'howdy1', 'timestamp': 1575112612145, 'deleted': False}])
-list3 = my_list([{'displayName': 'tariq', 'message': 'killyoself', 'timestamp': 1575112612345, 'deleted': False}, {'displayName': 'tariq', 'message': 'howdy2', 'timestamp': 1575112612390, 'deleted': False}])
+list3 = my_list([{'displayName': 'tariq', 'message': 'hello', 'timestamp': 1575112612345, 'deleted': False}, {'displayName': 'tariq', 'message': 'howdy2', 'timestamp': 1575112612390, 'deleted': False}])
 
 for i in range(97):
-    list3.append({'displayName': 'yolo', 'message': i, 'timestamp': 1575112612345 + (i*1000)})
+    list3.append({'displayName': 'test3', 'message': i, 'timestamp': 1575112612345 + (i*1000)})
 
-channels = {'one': {'messageList': list1},
-'two': {'messageList': list2},
-'three': {'messageList': list3}}
+channels = {'example_one': {'messageList': list1},
+'example_two': {'messageList': list2},
+'example_three': {'messageList': list3}}
 
 @app.route("/", methods=["GET"])
 def index():
