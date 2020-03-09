@@ -117,7 +117,7 @@ def delete_message(data):
             emit('delete message', {'channel': channel, 'displayName': displayName, 'timestamp': timestamp, 'deleted': True}, broadcast=True)
 
 # Code below for debugger, autoloading and Flask-SocketIO to work properly
-if __name__ == "__main__":
-    app.run(debug=True, host="127.0.0.1")
-
-""" Run as py application.py in windows"""
+# if __name__ == "__main__":
+#     app.run(debug=True, host="127.0.0.1")
+# 
+# """ Run as py application.py in windows"""
