@@ -13,7 +13,7 @@ var infoTimeout = 3000; // time in ms that info messages are displayed
 
 function connectSocketIO () {
 
-    socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port, {transports: '[websocket]'});
+    socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
     socket.on('connect', () => {
 
         socket.on('announce message', data => {
@@ -178,7 +178,7 @@ function checkChannelName () {
 // calculates characters remaining for the channel name form
 function charsLeft() {
     const newChannel = document.querySelector('#newChannel');
-
+    
     // moving code out of the eventhandlers no longer works...
     newChannel.onclick = () => {
         let chars = 10 - document.querySelector('#newChannel').value.length;
@@ -220,16 +220,16 @@ function changeChannel (a) {
 
 // loads all messages when a channel is selected
 function loadChannel (data) {
-
+    
     document.querySelector('#messageDisplayList').innerHTML = '' // clears previously displayed messages
     document.querySelector('#messageInputContainer').style.display = "none"; // hides the message form
-
-    const request = new XMLHttpRequest(); // creates AJAX GET Request for channel's messages
+    
+    const request = new XMLHttpRequest(); // creates AJAX GET Request for channel's messages 
     request.open('GET', '/' + data);
 
     request.onload = () => {
         const messageList = JSON.parse(request.responseText); //messageList returned
-
+        
         if (messageList == "error - channel not found") {
             const li = document.createElement('li');
             li.innerHTML = "Channel expired/invalid"
@@ -239,7 +239,7 @@ function loadChannel (data) {
             }, infoTimeout);
             localStorage.removeItem('channel');
         } else {
-
+        
             localStorage.setItem('channel', currentChannel);
             // changes style to display which channel is selected
             document.querySelector('#' + CSS.escape(data)).style.fontWeight = 'bold';
