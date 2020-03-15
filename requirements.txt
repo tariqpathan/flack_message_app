@@ -1,4 +1,4 @@
 Flask
 Flask-SocketIO
-gunicorn
+gunicorn==18.0.0
 eventlet==0.24.1
