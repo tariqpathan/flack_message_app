@@ -27,8 +27,8 @@ function connectSocketIO () {
         socket.on('delete message', data => {
             if (currentChannel == data.channel) {
                 let deleteButton = document.querySelector('#' + CSS.escape(data.timestamp));
-                deleteButton.parentElement.firstElementChild.innerHTML = "This message was deleted by the user"
-                loadChannel(data.channel);
+                deleteButton.parentElement.parentElement.firstElementChild.innerHTML = "This message was deleted by the user"
+                //loadChannel(data.channel);
             }
         });
     });
@@ -179,7 +179,6 @@ function checkChannelName () {
 function charsLeft() {
     const newChannel = document.querySelector('#newChannel');
 
-    // moving code out of the eventhandlers no longer works...
     newChannel.onclick = () => {
         let chars = 10 - document.querySelector('#newChannel').value.length;
         document.querySelector('#counter').innerHTML = chars;
