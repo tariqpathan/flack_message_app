@@ -13,7 +13,7 @@ var infoTimeout = 3000; // time in ms that info messages are displayed
 
 function connectSocketIO () {
 
-    socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
+    socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace);
     socket.on('connect', () => {
 
         socket.on('announce message', data => {
