@@ -34,7 +34,6 @@ socket.on('delete message', data => {
     }
 });
 
-// checks local storage for a displayname
 function getDisplayName () {
     displayName = localStorage.getItem('displayName');
     if (displayName) {
@@ -44,14 +43,14 @@ function getDisplayName () {
     };
 }
 
-// compares local storage to server for a unique displayname
+
 function checkDisplayName (displayName) {
     const request = new XMLHttpRequest();
     request.open('POST', '/new_display_name');
     request.onload = () => {
         dataReturned = JSON.parse(request.responseText);
         if (dataReturned == 'Name taken') {
-            localStorage.removeItem('displayName'); //clears local storage
+            localStorage.removeItem('displayName');
             document.querySelector('#result').innerHTML = "Name taken"
             submitDisplayName();
         } else {
@@ -67,7 +66,7 @@ function checkDisplayName (displayName) {
     return false;
 }
 
-// displays form and checks user submission for a unique displayname
+
 function submitDisplayName () {
     document.querySelector('#displayNameFormDiv').style.display = "block"
     document.querySelector('#mainContainer').style.display = "none"
@@ -178,7 +177,6 @@ function checkChannelName () {
 // calculates characters remaining for the channel name form
 function charsLeft() {
     const newChannel = document.querySelector('#newChannel');
-
     newChannel.onclick = () => {
         let chars = 10 - document.querySelector('#newChannel').value.length;
         document.querySelector('#counter').innerHTML = chars;
@@ -208,7 +206,6 @@ function selectChannel () {
     }
 }
 
-// clears the message display list and selects a new channel to load
 function changeChannel (a) {
     document.querySelectorAll('#channelList > li').forEach((item) => {
         item.style.fontWeight = 'normal'
@@ -284,7 +281,7 @@ function addMessage () {
     };
 }
 
-// displays messages posted or retrieved via server
+
 function displayMessage (data) {
     const readableTime = new Date(data.timestamp).toLocaleTimeString({hour: '2-digit', minute:'2-digit'});
     // copies a template div and inserts data into it
@@ -333,6 +330,7 @@ function displayMessage (data) {
     // scroll to the bottom of the div
     messageDisplayList.parentElement.scrollTop = messageDisplayList.scrollHeight;
 }
+
 
 function deleteMessage (item) {
     socket.emit('delete request', {'channel': currentChannel, 'displayName': displayName, 'timestamp': item.id});
