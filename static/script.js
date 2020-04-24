@@ -8,10 +8,10 @@ var displayName;
 var currentChannel;
 var deletionTime = 20 * 60 * 1000; // grace period (in ms) for deleting messages
 var infoTimeout = 3000; // time in ms that info messages are displayed
-
-var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port, { transports: ['websockets'] });
+var socket;
 
 function connectSocketIO () {
+    socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port, { transports: ['websockets'] });
     socket.on('connect', () => {
         console.log('client connected');
         socket.on('disconnect', () => console.log('client disconnected'));
