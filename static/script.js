@@ -11,7 +11,7 @@ var infoTimeout = 3000; // time in ms that info messages are displayed
 var socket;
 
 function connectSocketIO () {
-    socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
+    socket = io.connect('https://' + document.domain + ':' + location.port + namespace);
     socket.on('connect', () => {
         console.log('client connected');
         socket.on('disconnect', () => console.log('client disconnected'));
