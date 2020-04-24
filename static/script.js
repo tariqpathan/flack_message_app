@@ -11,28 +11,30 @@ var infoTimeout = 3000; // time in ms that info messages are displayed
 var socket;
 
 function connectSocketIO () {
-    socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port, { transports: ['websockets'] });
+    socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
     socket.on('connect', () => {
         console.log('client connected');
         socket.on('disconnect', () => console.log('client disconnected'));
     });
+
+    socket.on('announce message', data => {
+        if (currentChannel === data.channel) {
+            displayMessage(data);
+            const messageDisplayList = document.querySelector('#messageDisplayList');
+            messageDisplayList.parentElement.scrollTop = messageDisplayList.scrollHeight; //scroll after all messages loaded
+        };
+    });
+
+    socket.on('delete message', data => {
+        if (currentChannel == data.channel) {
+            let deleteButton = document.querySelector('#' + CSS.escape(data.timestamp));
+            deleteButton.parentElement.parentElement.firstElementChild.innerHTML = "This message was deleted by the user"
+            //loadChannel(data.channel);
+        }
+    });
 }
 
-socket.on('announce message', data => {
-    if (currentChannel === data.channel) {
-        displayMessage(data);
-        const messageDisplayList = document.querySelector('#messageDisplayList');
-        messageDisplayList.parentElement.scrollTop = messageDisplayList.scrollHeight; //scroll after all messages loaded
-    };
-});
 
-socket.on('delete message', data => {
-    if (currentChannel == data.channel) {
-        let deleteButton = document.querySelector('#' + CSS.escape(data.timestamp));
-        deleteButton.parentElement.parentElement.firstElementChild.innerHTML = "This message was deleted by the user"
-        //loadChannel(data.channel);
-    }
-});
 
 function getDisplayName () {
     displayName = localStorage.getItem('displayName');
