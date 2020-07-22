@@ -8,34 +8,34 @@ var displayName;
 var currentChannel;
 var deletionTime = 20 * 60 * 1000; // grace period (in ms) for deleting messages
 var infoTimeout = 3000; // time in ms that info messages are displayed
-
-const socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
+var socket;
 
 function connectSocketIO () {
-    var connectNumber = 0;
-    console.log(socket);
+    socket = io.connect('https://' + document.domain + ':' + location.port);
     socket.on('connect', () => {
-        connectNumber += 1;
-        console.log(`connect ${connectNumber}`);
-        socket.on('announce message', data => {
-            if (currentChannel === data.channel) {
-                displayMessage(data);
-                const messageDisplayList = document.querySelector('#messageDisplayList');
-                messageDisplayList.parentElement.scrollTop = messageDisplayList.scrollHeight; //scroll after all messages loaded
-            };
-        });
+        console.log('client connected');
+        socket.on('disconnect', () => console.log('client disconnected'));
+    });
 
-        socket.on('delete message', data => {
-            if (currentChannel == data.channel) {
-                let deleteButton = document.querySelector('#' + CSS.escape(data.timestamp));
-                deleteButton.parentElement.firstElementChild.innerHTML = "This message was deleted by the user"
-                loadChannel(data.channel);
-            }
-        });
+    socket.on('announce message', data => {
+        if (currentChannel === data.channel) {
+            displayMessage(data);
+            const messageDisplayList = document.querySelector('#messageDisplayList');
+            messageDisplayList.parentElement.scrollTop = messageDisplayList.scrollHeight; //scroll after all messages loaded
+        };
+    });
+
+    socket.on('delete message', data => {
+        if (currentChannel == data.channel) {
+            let deleteButton = document.querySelector('#' + CSS.escape(data.timestamp));
+            deleteButton.parentElement.parentElement.firstElementChild.innerHTML = "This message was deleted by the user"
+            //loadChannel(data.channel);
+        }
     });
 }
 
-// checks local storage for a displayname
+
+
 function getDisplayName () {
     displayName = localStorage.getItem('displayName');
     if (displayName) {
@@ -179,8 +179,6 @@ function checkChannelName () {
 // calculates characters remaining for the channel name form
 function charsLeft() {
     const newChannel = document.querySelector('#newChannel');
-
-    // moving code out of the eventhandlers no longer works...
     newChannel.onclick = () => {
         let chars = 10 - document.querySelector('#newChannel').value.length;
         document.querySelector('#counter').innerHTML = chars;
