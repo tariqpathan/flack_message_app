@@ -93,6 +93,7 @@ function updateChannels () {
         if (channelRequest.status === 200 && channelData.length != 0) {
             //from channelData, extract list of channelNames
             document.querySelector('#channelList').innerHTML = '';
+            document.querySelector('#channelDataList').innerHTML = '';
             for (const channel in channelData) {
                 const li = document.createElement('li');
                 li.innerHTML = channel.link('/' + channel);
