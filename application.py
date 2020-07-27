@@ -2,12 +2,9 @@ import os
 
 from flask import Flask, jsonify, redirect, render_template, request, session
 from flask_socketio import SocketIO, emit
-#from flask_session import Session
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = os.urandom(20)
-#Session(app)
-#session['current_users'] = []
 socketio = SocketIO(app, engineio_logger=True, logger=True)
 current_users = []
 
@@ -30,7 +27,6 @@ channels = {'example_one': {'messageList': list1},
 @app.route("/", methods=["GET"])
 def index():
     print(f"current users: {current_users}")
-    print(session)
     return render_template("index.html")
 
 @app.route('/new_display_name', methods=['POST'])
@@ -118,6 +114,6 @@ def delete_message(data):
 
 # Code below for debugger, autoloading and Flask-SocketIO to work properly
 if __name__ == "__main__":
-    app.run(debug=True, host="127.0.0.1")
+    socketio.run(app)
 
 # """ Run as py application.py in windows"""
