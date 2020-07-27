@@ -8,7 +8,7 @@ app = Flask(__name__)
 app.config["SECRET_KEY"] = os.urandom(20)
 #Session(app)
 #session['current_users'] = []
-socketio = SocketIO(app)
+socketio = SocketIO(app, engineio_logger=True, logger=True)
 current_users = []
 
 class my_list(list):
@@ -117,7 +117,7 @@ def delete_message(data):
             emit('delete message', {'channel': channel, 'displayName': displayName, 'timestamp': timestamp, 'deleted': True}, broadcast=True)
 
 # Code below for debugger, autoloading and Flask-SocketIO to work properly
-# if __name__ == "__main__":
-#     app.run(debug=True, host="127.0.0.1")
+if __name__ == "__main__":
+    app.run(debug=True, host="127.0.0.1")
 
 # """ Run as py application.py in windows"""
