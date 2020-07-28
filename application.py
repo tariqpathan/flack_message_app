@@ -5,7 +5,8 @@ from flask_socketio import SocketIO, emit
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = os.urandom(20)
-socketio = SocketIO(app, engineio_logger=True, logger=True)
+app_url = 'https://flack-messaging-app.herokuapp.com' # heroku url for hosting
+socketio = SocketIO(app, engineio_logger=True, logger=True, cors_allowed_origins=app_url)
 current_users = []
 
 class my_list(list):
@@ -13,6 +14,7 @@ class my_list(list):
         list.append(self, item)
         if len(self) > 100: self[:1]=[]
 
+# example channels with messages for demonstration purposes
 list1 = my_list([{'displayName': 'tariq', 'message': 'hiiiii', 'timestamp': 1575112612345, 'deleted': False}])
 list2 = my_list([{'displayName': 'joseph', 'message': 'howdy1', 'timestamp': 1575112612145, 'deleted': False}])
 list3 = my_list([{'displayName': 'tariq', 'message': 'hello', 'timestamp': 1575112612345, 'deleted': False}, {'displayName': 'tariq', 'message': 'howdy2', 'timestamp': 1575112612390, 'deleted': False}])
