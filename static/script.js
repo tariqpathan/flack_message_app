@@ -222,7 +222,7 @@ function changeChannel (a) {
 // loads all messages when a channel is selected
 function loadChannel (data) {
 
-    document.querySelector('#messageDisplayList').innerHTML = '' // clears previously displayed messages
+    document.querySelector('#messageDisplayList').innerHTML = ''; // clears previously displayed messages
     document.querySelector('#messageInputContainer').style.display = "none"; // hides the message form
 
     const request = new XMLHttpRequest(); // creates AJAX GET Request for channel's messages
