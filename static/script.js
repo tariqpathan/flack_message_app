@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 var displayName;
 var currentChannel;
-var deletionTime = 20 * 60 * 1000; // grace period (in ms) for deleting messages
+var deletionTime = 20 * 1000; // grace period (in ms) for deleting messages
 var infoTimeout = 3000; // time in ms that info messages are displayed
 var socket;
 
