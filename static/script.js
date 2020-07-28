@@ -310,14 +310,12 @@ function displayMessage (data) {
                 deleteMessage(deleteParent);
             });
 
-            // creates asynchronous code for a delete timer
             var deleteTimer = new Promise(resolve => {
                 setTimeout(() => resolve(deleteButton), timeLeft); // resolves when timer expires
             });
 
             deleteTimer.then((deleteButton) => {
                 deleteButton.remove();
-                loadChannel(currentChannel);
             });
 
             deleteParent.appendChild(deleteButton);
