@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     getDisplayName();
     checkChannelName();
     characterDisplay();
+    addMessage();
 });
 
 var displayName;
@@ -188,7 +189,6 @@ function characterDisplay() {
 
 function displayChars() {
     const channelNameLength = document.querySelector('input#newChannel').value.length;
-    console.log(channelNameLength);
     let chars = (channelNameLength ? channelNameLength : 0);
     document.querySelector('#counter').innerHTML = 10 - chars;
 }
@@ -268,7 +268,7 @@ function loadChannel (data) {
             messageDisplayList.parentElement.scrollTop = messageDisplayList.scrollHeight;; //scroll after all messages loaded
 
             // allows messages for that channel to be sent and received
-            addMessage();
+            //addMessage();
         }
     }
     request.send();
@@ -280,12 +280,25 @@ function loadChannel (data) {
 // allows users to post messages in realtime, without refresh
 function addMessage () {
     // emit a new message announcement when message is posted
-    document.querySelector('#messageButton').onclick = () => {
+    document.querySelector('#messageButton').onclick = (event) => {
+        event.preventDefault();
+        console.log("hello");
         const message = document.querySelector('#newMessage').value;
-        socket.emit('new message', {'currentChannel': currentChannel, 'displayName': displayName, 'message': message, 'timestamp': (new Date()).getTime()});
         document.querySelector('#newMessage').value = '';
+        console.log("hello");
+        console.log(currentChannel);
+        if (!currentChannel) {
+            const li = document.createElement('li');
+            li.innerHTML = "Pick a channel"
+            document.querySelector('#messageDisplayList').append(li);
+            setTimeout(() => {
+                document.querySelector('#messageDisplayList').firstElementChild.remove();
+            }, infoTimeout);
+        } else {
+            socket.emit('new message', {'currentChannel': currentChannel, 'displayName': displayName, 'message': message, 'timestamp': (new Date()).getTime()});
+        }
         return false;
-    };
+    }
 }
 
 // displays messages posted or retrieved via server
