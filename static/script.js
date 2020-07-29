@@ -2,11 +2,13 @@ document.addEventListener('DOMContentLoaded', () => {
     connectSocketIO();
     getDisplayName();
     checkChannelName();
+    characterDisplay();
+    addMessage();
 });
 
 var displayName;
 var currentChannel;
-var deletionTime = 20 * 60 * 1000; // grace period (in ms) for deleting messages
+var deletionTime = 20 * 1000; // grace period (in ms) for deleting messages
 var infoTimeout = 3000; // time in ms that info messages are displayed
 var socket;
 
@@ -135,14 +137,14 @@ function updateChannels () {
 // checks if a channel name is available
 function checkChannelName () {
     document.querySelector('#channelForm').onsubmit = () => {
-        if (document.querySelector('#newChannel').value.length === 0) {
+        if (document.querySelector('input#newChannel').value.length === 0) {
             return false
         }
         // clears the error message on a new submission
         document.querySelector('#result').innerHTML = '';
 
         const request = new XMLHttpRequest(); //XML request object
-        const channelName = document.querySelector('#newChannel').value;
+        const channelName = document.querySelector('input#newChannel').value;
         request.open('POST', '/new_channel');
 
         // This is what happens when the data is returned
@@ -169,8 +171,8 @@ function checkChannelName () {
         request.send(data);
 
         // clears the form
-        document.querySelector('#newChannel').value = '';
-
+        document.querySelector('input#newChannel').value = '';
+        document.querySelector('input#newMessage').focus();
         // prevents form submission
         return false;
     };
@@ -178,23 +180,23 @@ function checkChannelName () {
 
 
 // calculates characters remaining for the channel name form
-function charsLeft() {
-    const newChannel = document.querySelector('#newChannel');
-    newChannel.onclick = () => {
-        let chars = 10 - document.querySelector('#newChannel').value.length;
-        document.querySelector('#counter').innerHTML = chars;
-    };
-    newChannel.onkeyup = () => {
-        let chars = 10 - document.querySelector('#newChannel').value.length;
-        document.querySelector('#counter').innerHTML = chars;
-    };
+function characterDisplay() {
+    const newChannelInput = document.querySelector('input#newChannel');
+    newChannelInput.addEventListener('focusin', displayChars);
+    newChannelInput.addEventListener('keyup', displayChars);
+    newChannelInput.addEventListener('focusout', displayChars);
+}
+
+function displayChars() {
+    const channelNameLength = document.querySelector('input#newChannel').value.length;
+    let chars = (channelNameLength ? channelNameLength : 0);
+    document.querySelector('#counter').innerHTML = 10 - chars;
 }
 
 
 // loads the previous channel that a user was on
 function selectChannel () {
     let data = localStorage.getItem('channel');
-    charsLeft();
 
     // select form can change channel - maybe this could be placed elsewhere?
     const select = document.querySelector('#channelDatalist');
@@ -266,10 +268,11 @@ function loadChannel (data) {
             messageDisplayList.parentElement.scrollTop = messageDisplayList.scrollHeight;; //scroll after all messages loaded
 
             // allows messages for that channel to be sent and received
-            addMessage();
+            //addMessage();
         }
     }
     request.send();
+    document.querySelector('#newMessage').focus();
     return false;
 }
 
@@ -277,12 +280,25 @@ function loadChannel (data) {
 // allows users to post messages in realtime, without refresh
 function addMessage () {
     // emit a new message announcement when message is posted
-    document.querySelector('#messageButton').onclick = () => {
+    document.querySelector('#messageButton').onclick = (event) => {
+        event.preventDefault();
+        console.log("hello");
         const message = document.querySelector('#newMessage').value;
-        socket.emit('new message', {'currentChannel': currentChannel, 'displayName': displayName, 'message': message, 'timestamp': (new Date()).getTime()});
         document.querySelector('#newMessage').value = '';
+        console.log("hello");
+        console.log(currentChannel);
+        if (!currentChannel) {
+            const li = document.createElement('li');
+            li.innerHTML = "Pick a channel"
+            document.querySelector('#messageDisplayList').append(li);
+            setTimeout(() => {
+                document.querySelector('#messageDisplayList').firstElementChild.remove();
+            }, infoTimeout);
+        } else {
+            socket.emit('new message', {'currentChannel': currentChannel, 'displayName': displayName, 'message': message, 'timestamp': (new Date()).getTime()});
+        }
         return false;
-    };
+    }
 }
 
 // displays messages posted or retrieved via server
@@ -310,14 +326,12 @@ function displayMessage (data) {
                 deleteMessage(deleteParent);
             });
 
-            // creates asynchronous code for a delete timer
             var deleteTimer = new Promise(resolve => {
                 setTimeout(() => resolve(deleteButton), timeLeft); // resolves when timer expires
             });
 
             deleteTimer.then((deleteButton) => {
                 deleteButton.remove();
-                loadChannel(currentChannel);
             });
 
             deleteParent.appendChild(deleteButton);
