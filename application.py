@@ -6,7 +6,7 @@ from flask_socketio import SocketIO, emit
 app = Flask(__name__)
 app.config["SECRET_KEY"] = os.urandom(20)
 app_url = 'flack-messaging-app.herokuapp.com' # heroku url for hosting
-socketio = SocketIO(app, engineio_logger=True, logger=True, cors_allowed_origins=['http://' + app_url, 'https://' + app_url])
+socketio = SocketIO(app, engineio_logger=True, logger=True, cors_allowed_origins='*') #['http://' + app_url, 'https://' + app_url])
 current_users = []
 
 class my_list(list):

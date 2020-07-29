@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     connectSocketIO();
     getDisplayName();
     checkChannelName();
+    characterDisplay();
 });
 
 var displayName;
@@ -135,14 +136,14 @@ function updateChannels () {
 // checks if a channel name is available
 function checkChannelName () {
     document.querySelector('#channelForm').onsubmit = () => {
-        if (document.querySelector('#newChannel').value.length === 0) {
+        if (document.querySelector('input#newChannel').value.length === 0) {
             return false
         }
         // clears the error message on a new submission
         document.querySelector('#result').innerHTML = '';
 
         const request = new XMLHttpRequest(); //XML request object
-        const channelName = document.querySelector('#newChannel').value;
+        const channelName = document.querySelector('input#newChannel').value;
         request.open('POST', '/new_channel');
 
         // This is what happens when the data is returned
@@ -169,8 +170,8 @@ function checkChannelName () {
         request.send(data);
 
         // clears the form
-        document.querySelector('#newChannel').value = '';
-
+        document.querySelector('input#newChannel').value = '';
+        document.querySelector('input#newMessage').focus();
         // prevents form submission
         return false;
     };
@@ -178,23 +179,24 @@ function checkChannelName () {
 
 
 // calculates characters remaining for the channel name form
-function charsLeft() {
-    const newChannel = document.querySelector('#newChannel');
-    newChannel.onclick = () => {
-        let chars = 10 - document.querySelector('#newChannel').value.length;
-        document.querySelector('#counter').innerHTML = chars;
-    };
-    newChannel.onkeyup = () => {
-        let chars = 10 - document.querySelector('#newChannel').value.length;
-        document.querySelector('#counter').innerHTML = chars;
-    };
+function characterDisplay() {
+    const newChannelInput = document.querySelector('input#newChannel');
+    newChannelInput.addEventListener('focusin', displayChars);
+    newChannelInput.addEventListener('keyup', displayChars);
+    newChannelInput.addEventListener('focusout', displayChars);
+}
+
+function displayChars() {
+    const channelNameLength = document.querySelector('input#newChannel').value.length;
+    console.log(channelNameLength);
+    let chars = (channelNameLength ? channelNameLength : 0);
+    document.querySelector('#counter').innerHTML = 10 - chars;
 }
 
 
 // loads the previous channel that a user was on
 function selectChannel () {
     let data = localStorage.getItem('channel');
-    charsLeft();
 
     // select form can change channel - maybe this could be placed elsewhere?
     const select = document.querySelector('#channelDatalist');
@@ -270,6 +272,7 @@ function loadChannel (data) {
         }
     }
     request.send();
+    document.querySelector('#newMessage').focus();
     return false;
 }
 
